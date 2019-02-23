@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 具体配置内容 -->
+
+    <!--指定驱动的路径-->
+    <classPathEntry location="C:\Users\jiang\.m2\repository\mysql\mysql-connector-java\8.0.13\mysql-connector-java-8.0.13.jar"/>
+
+    <!--指定生成一组对象的环境-->
+    <context id="MysqlContext" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <property name="caseSensitive" value="true"/>
+        </plugin>
+
+        <!--生成表或字段的备注信息-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!--用于指定数据库连接信息，该元素必选，并且只能有一个-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://188.131.133.149:3306/maitu"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+
+
+        <!-- 对应生成的pojo所在包 -->
+        <javaModelGenerator targetPackage="com.ljc.maitu.pojo" targetProject="src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- 对应生成的mapper所在目录 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+
+        <!-- 配置mapper对应的java映射 -->
+        <javaClientGenerator targetPackage="com.ljc.maitu.mapper" targetProject="src/main/java"
+                             type="XMLMAPPER"/>
+
+
+        <!--指定数据库表-->
+        <table tableName="user"  catalog="maitu">
+            <property name="ignoreQualifiersAtRuntime" value="true"/>
+        </table>
+        <table tableName=""></table>
+
+    </context>
+
+</generatorConfiguration>
