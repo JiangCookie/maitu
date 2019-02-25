@@ -18,7 +18,7 @@
 	// 验证码值存储变量
 	var vailCode;
 	// 执行获取验证码
-	refCode();
+	// refCode();
 
 	// 点击刷新验证码
 	$("#refCode_login_img").on("click", function() {
@@ -39,14 +39,14 @@
 	}
 
 	// 自定义验证规则
-	form.verify({
-		account: function(value) {
-			var regPhone = /^1[34578]\d{9}$/;
-			if(!regPhone.test(value.trim())) {
-				return "请输入正确的手机号";
-			}
-		}
-	});
+	// form.verify({
+	// 	account: function(value) {
+	// 		var regPhone = /^1[34578]\d{9}$/;
+	// 		if(!regPhone.test(value.trim())) {
+	// 			return "请输入正确的手机号";
+	// 		}
+	// 	}
+	// });
 
 	//监听提交  
 	form.on("submit(login)", function() {
@@ -54,7 +54,7 @@
 			url: ajaxRoot+GLOBAL_AJAX_URL.userlogin,
 			type: "post",
 			data: {
-				"phone": $("#account").val(),
+				"username": $("#username").val(),
 				"password": $("#password").val()
 			},
 			success: function(result) {

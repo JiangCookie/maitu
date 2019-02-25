@@ -11,6 +11,9 @@ var GLOBAL_AJAX_URL = {
     userRegist: '/user/regist',
     validatePhone: '/user/validatePhone', //验证手机号
 
+    //------用户------
+    get_information: '/user/get_information',  //获取用户信息
+
     //------商品分类------
     categoryList: '/manage/category/get_category',     //一级分类
 

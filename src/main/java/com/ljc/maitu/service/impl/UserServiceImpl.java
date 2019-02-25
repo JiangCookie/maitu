@@ -36,9 +36,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean queryEmailIsExist(String email) {
-        User user = new User();
-        user.setEmail(email);
-        User result =  userMapper.selectOne(user);
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("email", 1);
+        User result =  userMapper.selectOneByExample(example);
         return result == null ? false : true;
     }
 
