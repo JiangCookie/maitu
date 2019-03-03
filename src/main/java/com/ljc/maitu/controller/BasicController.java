@@ -1,7 +1,9 @@
 package com.ljc.maitu.controller;
 
 import com.ljc.maitu.common.utils.CookieUtil;
+import com.ljc.maitu.common.utils.JsonUtils;
 import com.ljc.maitu.common.utils.RedisOperator;
+import com.ljc.maitu.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,5 +30,14 @@ public class BasicController {
         }
 
         return redisValue;
+    }
+
+    /**
+     * @Description: 获取用户信息
+     */
+    public User getUser(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        User user = JsonUtils.jsonToPojo(redis.get(token),User.class);
+        return user;
     }
 }

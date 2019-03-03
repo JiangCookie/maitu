@@ -1,28 +1,26 @@
 package com.ljc.maitu.controller.backStage;
 
 import com.ljc.maitu.common.Const;
+import com.ljc.maitu.common.ResponseCode;
 import com.ljc.maitu.common.ServerResponse;
-import com.ljc.maitu.common.utils.CookieUtil;
-import com.ljc.maitu.common.utils.JsonUtils;
-import com.ljc.maitu.common.utils.MD5Utils;
-import com.ljc.maitu.common.utils.RedisOperator;
+import com.ljc.maitu.common.utils.*;
 import com.ljc.maitu.pojo.User;
 import com.ljc.maitu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.util.StringUtil;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 
 /**
  * @author JYH
  * 2019/1/8 13:22
  */
-@Controller
-@RequestMapping("/manage/user")
+@RestController
+@RequestMapping("/manage/user/")
 public class UserManageController {
 
 
@@ -33,7 +31,7 @@ public class UserManageController {
     public RedisOperator redis;
 
     @PostMapping("login")
-    public ServerResponse<User> login(String username, String password, HttpServletResponse httpServletResponse, HttpSession session) throws Exception {
+    public ServerResponse login(String username, String password, HttpServletResponse httpServletResponse) throws Exception {
 
         // 1. 判断用户名和密码必须不为空
         if(StringUtil.isEmpty(username) || StringUtil.isEmpty(password)){
@@ -52,19 +50,19 @@ public class UserManageController {
         if (userResult != null) {
             if(userResult.getRole() == Const.Role.ROLE_ADMIN){
                 userResult.setPassword("");
+                String jwt = JwtUtil.generateToken(userResult.getUsername());
 
-                //保存登录JsessionId，返回到一级域名
-                CookieUtil.writeLoginToken(httpServletResponse,session.getId());
-                //根据JsessionId保存到redis缓存中
-                redis.set(session.getId(), JsonUtils.objectToJson(userResult), Const.TIMEOUT);
 
-                return ServerResponse.createBySuccess("登录成功",userResult);
+                //根据jwt与用户信息保存到redis缓存中
+                redis.set(jwt, JsonUtils.objectToJson(userResult), Const.TIMEOUT);
+
+                return ServerResponse.createBySuccess("登录成功",jwt);
             }else {
-                return ServerResponse.createByErrorMessage("不是管理员，无法登陆");
+                return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),"不是管理员，无法登陆");
             }
 
         } else {
-            return ServerResponse.createByErrorMessage("密码不正确, 请重试...");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),"密码不正确, 请重试...");
         }
     }
 }

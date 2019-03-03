@@ -47,10 +47,10 @@
 
 
         <!--指定数据库表-->
-        <table tableName="user"  catalog="maitu">
+        <table tableName="cart"  catalog="maitu">
             <property name="ignoreQualifiersAtRuntime" value="true"/>
         </table>
-        <table tableName=""></table>
+
 
     </context>
 

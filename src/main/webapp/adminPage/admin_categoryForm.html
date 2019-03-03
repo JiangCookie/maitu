@@ -11,11 +11,11 @@
     <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
     <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
 
-    <link rel="shortcut icon" href="favicon.ico"> <link href="H+/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="H+/css/font-awesome.css?v=4.4.0" rel="stylesheet">
-    <link href="H+/css/plugins/iCheck/custom.css" rel="stylesheet">
-    <link href="H+/css/animate.css" rel="stylesheet">
-    <link href="H+/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="../H+/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../H+/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../H+/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="../H+/css/animate.css" rel="stylesheet">
+    <link href="../H+/css/style.css?v=4.1.0" rel="stylesheet">
 
 </head>
 
@@ -25,28 +25,21 @@
             <div class="col-sm-8 col-sm-offset-2">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>横向表单</h5>
+                        <h5>添加分类</h5>
                     </div>
                     <div class="ibox-content">
                         <form class="form-horizontal">
-                            <p>欢迎登录本站(⊙o⊙)</p>
+                            <p>(⊙o⊙)</p>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">用户名：</label>
+                                <label class="col-sm-3 control-label">分类名：</label>
 
-                                <div class="col-sm-8">
-                                    <input type="email" placeholder="用户名" class="form-control"> <span class="help-block m-b-none">请输入您注册时所填的E-mail</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">密码：</label>
-
-                                <div class="col-sm-8">
-                                    <input type="password" placeholder="密码" class="form-control">
+                                <div class="col-sm-4">
+                                    <input type="text" name="categoryName" placeholder="分类名字" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-8">
-                                    <button class="btn btn-sm btn-primary" type="submit"><strong>登 录</strong></button>
+                                    <button class="btn btn-sm btn-primary"  id="addCategory"><strong>添加</strong></button>
                                 </div>
                             </div>
                         </form>
@@ -97,21 +90,42 @@
     </div>
 
     <!-- 全局js -->
-    <script src="H+/js/jquery.min.js?v=2.1.4"></script>
-    <script src="H+/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="../H+/js/jquery.min.js?v=2.1.4"></script>
+    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+    <script src="../H+/js/bootstrap.min.js?v=3.3.6"></script>
 
     <!-- 自定义js -->
-    <script src="H+/js/content.js?v=1.0.0"></script>
+    <script src="../H+/js/content.js?v=1.0.0"></script>
+    <script src="../js/common/config.js"></script>
+    <script type="text/javascript" src="../js/common/method.js"></script>
+
 
     <!-- iCheck -->
-    <script src="H+/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="../H+/js/plugins/iCheck/icheck.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green',
             });
+
+
         });
+        $("#addCategory").click(function () {
+            $.ajax({
+                url: ajaxRoot+GLOBAL_AJAX_URL.add_category,
+                type: "POST",
+                async: false,
+                beforeSend: setHeader,
+                data:{
+                    categoryName: $('input[name="categoryName"]').val()
+                },
+                success: function (res) {
+                    console.log(res);
+                }
+            })
+        })
+
     </script>
 
 

@@ -1,10 +1,9 @@
 package com.ljc.maitu.controller.portal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ljc.maitu.common.Const;
-import com.ljc.maitu.common.ResponseCode;
 import com.ljc.maitu.common.ServerResponse;
 import com.ljc.maitu.common.utils.*;
+import com.ljc.maitu.controller.BasicController;
 import com.ljc.maitu.pojo.User;
 import com.ljc.maitu.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -15,8 +14,6 @@ import tk.mybatis.mapper.util.StringUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -25,7 +22,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/user/")
-public class UserController {
+public class UserController extends BasicController {
 
     @Autowired
     private UserService userService;
@@ -90,10 +87,11 @@ public class UserController {
         if (userResult != null) {
             userResult.setPassword("");
 
-            //保存登录JsessionId，返回到一级域名
-            CookieUtil.writeLoginToken(httpServletResponse,session.getId());
-            //根据JsessionId保存到redis缓存中
-            redis.set(session.getId(),JsonUtils.objectToJson(userResult),Const.TIMEOUT);
+            String jwt = JwtUtil.generateToken(userResult.getUsername());
+
+
+            //根据jwt与用户信息保存到redis缓存中
+            redis.set(jwt, JsonUtils.objectToJson(userResult), Const.TIMEOUT);
 
             return ServerResponse.createBySuccess("登录成功",userResult);
         } else {
@@ -112,11 +110,7 @@ public class UserController {
 
     @PostMapping("get_user_info")
     public ServerResponse<User> getUserInfo(HttpServletRequest request){
-        String loginToken = CookieUtil.readLoginToken(request);
-        User user = JsonUtils.jsonToPojo(redis.get(loginToken),User.class);
-        if(user != null){
-            return ServerResponse.createBySuccess(user);
-        }
+        User user = getUser(request);
         return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
     }
 
@@ -209,12 +203,8 @@ public class UserController {
      */
     @PostMapping("update_information")
     public ServerResponse<User> update_information(HttpServletRequest request,User user){
-        //检查是否登录
-        String redisValue = isLogin(request);
-        if(redisValue == null){
-            return ServerResponse.createByErrorMessage("用户未登录");
-        }
-        User oldUser = JsonUtils.jsonToPojo(redisValue,User.class);
+
+        User oldUser = getUser(request);
         user.setId(oldUser.getId());
         user.setUsername(oldUser.getUsername());
         ServerResponse<User> response = userService.updateInformation(user);
@@ -229,27 +219,11 @@ public class UserController {
 
     @PostMapping("get_information")
     public ServerResponse<User> get_information(HttpServletRequest request){
-        //检查是否登录
-        String redisValue = isLogin(request);
-        if(redisValue == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
-
-        return userService.getInformation(JsonUtils.jsonToPojo(redisValue,User.class).getId());
+        User user = getUser(request);
+        return userService.getInformation(user.getId());
     }
 
-    /**
-     * @Description: 判断是否登录
-     */
-    public String isLogin(HttpServletRequest request){
-        String loginToken = CookieUtil.readLoginToken(request);
-        String redisValue = null;
-        if(loginToken != null){
-            redisValue = redis.get(loginToken);
-        }
 
-        return redisValue;
-    }
 
 
     /**
