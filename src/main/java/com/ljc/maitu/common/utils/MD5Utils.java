@@ -3,7 +3,6 @@ package com.ljc.maitu.common.utils;
 
 
 import org.apache.commons.codec.binary.Base64;
-
 import java.security.MessageDigest;
 
 public class MD5Utils {
