@@ -57,7 +57,6 @@
 				"username": $("#username").val(),
 				"password": $("#password").val()
 			},
-			beforeSend: setHeader,
 			success: function(result) {
 				if(result.status == 0) {
 					setTokenToCookie(result.data);

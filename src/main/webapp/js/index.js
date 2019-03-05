@@ -26,4 +26,15 @@ $(function(){
 
     //调用函数
     isLogin();
+
+
+    //信息流加载
+    layui.use('flow', function(){
+        var flow = layui.flow;
+        //信息流
+        flow.load(options);
+
+        //图片懒加载
+        flow.lazyimg(options);
+    });
 });

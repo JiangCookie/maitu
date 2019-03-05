@@ -36,7 +36,7 @@ public class BasicController {
      * @Description: 获取用户信息
      */
     public User getUser(HttpServletRequest request){
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader("Authorization.js");
         User user = JsonUtils.jsonToPojo(redis.get(token),User.class);
         return user;
     }

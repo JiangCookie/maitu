@@ -15,6 +15,7 @@ var GLOBAL_AJAX_URL = {
     get_information: '/user/get_information',  //获取用户信息
 
     //------商品分类------
+    add_categoryImage: '/manage/category/add_categoryImage',  //添加图片地址
     add_category: '/manage/category/add_category',   //添加分类
     categoryList: '/manage/category/get_category',     //一级分类
 

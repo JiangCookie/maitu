@@ -1,67 +1,197 @@
 package com.ljc.maitu.pojo;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.Table;
 import java.util.Date;
-import java.util.Objects;
+import javax.persistence.*;
 
-@Setter
-@Getter
 @Table(name = "category")
 public class Category {
-
     /**
-     * ç±»åˆ«Id
+     * Àà±ğId
      */
+    @Id
     private Integer id;
 
     /**
-     * çˆ¶ç±»åˆ«id
+     * ¸¸Àà±ğidµ±id=0Ê±ËµÃ÷ÊÇ¸ù½Úµã,Ò»¼¶Àà±ğ
      */
+    @Column(name = "parent_id")
     private Integer parentId;
 
     /**
-     * ç±»åˆ«åç§°
+     * Àà±ğÃû³Æ
      */
     private String name;
 
     /**
-     * ç±»åˆ«çŠ¶æ€
+     * ·ÖÀàÍ¼Æ¬µØÖ·
+     */
+    @Column(name = "category_image")
+    private String categoryImage;
+
+    /**
+     * Àà±ğ×´Ì¬1-Õı³£,2-ÒÑ·ÏÆú
      */
     private Boolean status;
 
     /**
-     * æ’åºç¼–å·
+     * ÅÅĞò±àºÅ,Í¬ÀàÕ¹Ê¾Ë³Ğò,ÊıÖµÏàµÈÔò×ÔÈ»ÅÅĞò
      */
+    @Column(name = "sort_order")
     private Integer sortOrder;
 
     /**
-     * åˆ›å»ºæ—¶é—´
+     * ´´½¨Ê±¼ä
      */
+    @Column(name = "create_time")
     private Date createTime;
 
     /**
-     * æ›´æ–°æ—¶é—´
+     * ¸üĞÂÊ±¼ä
      */
+    @Column(name = "update_time")
     private Date updateTime;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()){
-            return false;
-        }
-        Category category = (Category) o;
-        return Objects.equals(id, category.id);
+    /**
+     * »ñÈ¡Àà±ğId
+     *
+     * @return id - Àà±ğId
+     */
+    public Integer getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    /**
+     * ÉèÖÃÀà±ğId
+     *
+     * @param id Àà±ğId
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * »ñÈ¡¸¸Àà±ğidµ±id=0Ê±ËµÃ÷ÊÇ¸ù½Úµã,Ò»¼¶Àà±ğ
+     *
+     * @return parent_id - ¸¸Àà±ğidµ±id=0Ê±ËµÃ÷ÊÇ¸ù½Úµã,Ò»¼¶Àà±ğ
+     */
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    /**
+     * ÉèÖÃ¸¸Àà±ğidµ±id=0Ê±ËµÃ÷ÊÇ¸ù½Úµã,Ò»¼¶Àà±ğ
+     *
+     * @param parentId ¸¸Àà±ğidµ±id=0Ê±ËµÃ÷ÊÇ¸ù½Úµã,Ò»¼¶Àà±ğ
+     */
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    /**
+     * »ñÈ¡Àà±ğÃû³Æ
+     *
+     * @return name - Àà±ğÃû³Æ
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * ÉèÖÃÀà±ğÃû³Æ
+     *
+     * @param name Àà±ğÃû³Æ
+     */
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * »ñÈ¡·ÖÀàÍ¼Æ¬µØÖ·
+     *
+     * @return category_image - ·ÖÀàÍ¼Æ¬µØÖ·
+     */
+    public String getCategoryImage() {
+        return categoryImage;
+    }
+
+    /**
+     * ÉèÖÃ·ÖÀàÍ¼Æ¬µØÖ·
+     *
+     * @param categoryImage ·ÖÀàÍ¼Æ¬µØÖ·
+     */
+    public void setCategoryImage(String categoryImage) {
+        this.categoryImage = categoryImage == null ? null : categoryImage.trim();
+    }
+
+    /**
+     * »ñÈ¡Àà±ğ×´Ì¬1-Õı³£,2-ÒÑ·ÏÆú
+     *
+     * @return status - Àà±ğ×´Ì¬1-Õı³£,2-ÒÑ·ÏÆú
+     */
+    public Boolean getStatus() {
+        return status;
+    }
+
+    /**
+     * ÉèÖÃÀà±ğ×´Ì¬1-Õı³£,2-ÒÑ·ÏÆú
+     *
+     * @param status Àà±ğ×´Ì¬1-Õı³£,2-ÒÑ·ÏÆú
+     */
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    /**
+     * »ñÈ¡ÅÅĞò±àºÅ,Í¬ÀàÕ¹Ê¾Ë³Ğò,ÊıÖµÏàµÈÔò×ÔÈ»ÅÅĞò
+     *
+     * @return sort_order - ÅÅĞò±àºÅ,Í¬ÀàÕ¹Ê¾Ë³Ğò,ÊıÖµÏàµÈÔò×ÔÈ»ÅÅĞò
+     */
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
+
+    /**
+     * ÉèÖÃÅÅĞò±àºÅ,Í¬ÀàÕ¹Ê¾Ë³Ğò,ÊıÖµÏàµÈÔò×ÔÈ»ÅÅĞò
+     *
+     * @param sortOrder ÅÅĞò±àºÅ,Í¬ÀàÕ¹Ê¾Ë³Ğò,ÊıÖµÏàµÈÔò×ÔÈ»ÅÅĞò
+     */
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    /**
+     * »ñÈ¡´´½¨Ê±¼ä
+     *
+     * @return create_time - ´´½¨Ê±¼ä
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * ÉèÖÃ´´½¨Ê±¼ä
+     *
+     * @param createTime ´´½¨Ê±¼ä
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    /**
+     * »ñÈ¡¸üĞÂÊ±¼ä
+     *
+     * @return update_time - ¸üĞÂÊ±¼ä
+     */
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    /**
+     * ÉèÖÃ¸üĞÂÊ±¼ä
+     *
+     * @param updateTime ¸üĞÂÊ±¼ä
+     */
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

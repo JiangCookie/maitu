@@ -34,8 +34,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private CategoryMapper categoryMapper;
 
-    @Value("${ftp.server.ip}")
-    private String imageHost;
+
 
     @Override
     public ServerResponse saveOrUpdateProduct(Product product) {
@@ -127,7 +126,7 @@ public class ProductServiceImpl implements ProductService {
         productDetailVo.setName(product.getName());
         productDetailVo.setStatus(product.getStatus());
         productDetailVo.setStock(product.getStock());
-        productDetailVo.setImageHost(imageHost);
+        productDetailVo.setImageHost("");
 
 
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
@@ -149,7 +148,7 @@ public class ProductServiceImpl implements ProductService {
         productListVo.setId(product.getId());
         productListVo.setName(product.getName());
         productListVo.setCategoryId(product.getCategoryId());
-        productListVo.setImageHost(imageHost);
+        productListVo.setImageHost("");
         productListVo.setMainImage(product.getMainImage());
         productListVo.setPrice(product.getPrice());
         productListVo.setSubtitle(product.getSubtitle());

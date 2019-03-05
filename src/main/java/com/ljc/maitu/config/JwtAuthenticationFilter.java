@@ -46,9 +46,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         boolean one = pathMatcher.match("/manage/user/**",request.getServletPath());
         boolean two = pathMatcher.match("/user/regist",request.getServletPath());
         boolean three = pathMatcher.match("/user/login",request.getServletPath());
-        if(one ||  two || three) {
+        //判断是否静态资源路径
+        boolean four = pathMatcher.match("/categoryImage/**",request.getServletPath());
+
+
+        if(one ||  two || three || four) {
             return false;
         }
+
         return true;
     }
 

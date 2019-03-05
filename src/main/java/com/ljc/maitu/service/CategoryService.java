@@ -14,7 +14,7 @@ public interface CategoryService {
     /**
      * @Description: 增加分类
      */
-    ServerResponse addCategory(String categoryName, Integer parentId);
+    ServerResponse addCategory(String categoryName, Integer parentId, String categoryImage);
 
     /**
      * @Description: 更新分类

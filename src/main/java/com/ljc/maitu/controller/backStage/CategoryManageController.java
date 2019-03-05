@@ -1,14 +1,19 @@
 package com.ljc.maitu.controller.backStage;
 
+import com.google.common.base.Strings;
 import com.ljc.maitu.common.ServerResponse;
 import com.ljc.maitu.controller.BasicController;
 import com.ljc.maitu.service.CategoryService;
 import com.ljc.maitu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -27,9 +32,42 @@ public class CategoryManageController extends BasicController {
     @Autowired
     private UserService userService;
 
+    @Value("${image.categoryBasic.Space}")
+    private String categoryBasic_Space;
+
+    @RequestMapping("add_categoryImage")
+    public ServerResponse addCategory( @RequestParam("file") MultipartFile file ) throws IOException {
+        // 保存到数据库中的相对路径
+        String categoryImage ;
+
+        if(file != null){
+            String fileName = file.getOriginalFilename();
+            if(!Strings.isNullOrEmpty(fileName)){
+
+                //本地保存路径
+                String localPath = categoryBasic_Space + "categoryImage" + File.separator + fileName;
+
+                //数据库保存路径
+                categoryImage = "categoryImage" + File.separator + fileName;
+
+                File outFile = new File(localPath);
+                if(outFile.getParentFile() != null || outFile.isDirectory() ){
+                    // 创建父文件夹
+                    outFile.getParentFile().mkdirs();
+                }
+                file.transferTo(outFile);
+            }else {
+                return ServerResponse.createByErrorMessage("上传出错");
+            }
+        }   else {
+            return ServerResponse.createByErrorMessage("上传文件为空...");
+        }
+        return ServerResponse.createBySuccess(categoryImage);
+    }
+
     @RequestMapping("add_category")
-    public ServerResponse addCategory(String categoryName, @RequestParam(value = "parentId",defaultValue = "0") int parentId){
-            return categoryService.addCategory(categoryName,parentId);
+    public ServerResponse addCategory(String categoryName,String categoryImage,@RequestParam(value = "parentId", defaultValue = "0") int parentId) throws IOException {
+        return categoryService.addCategory(categoryName,parentId,categoryImage);
     }
 
     @RequestMapping("set_category_name")
