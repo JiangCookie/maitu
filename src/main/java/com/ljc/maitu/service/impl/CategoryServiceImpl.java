@@ -73,6 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
         if(CollectionUtils.isEmpty(categoryList)){
             logger.info("未找到当前分类的子分类");
         }
+
         return ServerResponse.createBySuccess(categoryList);
     }
 

@@ -48,7 +48,7 @@ public class CategoryManageController extends BasicController {
                 String localPath = categoryBasic_Space + "categoryImage" + File.separator + fileName;
 
                 //数据库保存路径
-                categoryImage = "categoryImage" + File.separator + fileName;
+                categoryImage = File.separator + "categoryImage" + File.separator + fileName;
 
                 File outFile = new File(localPath);
                 if(outFile.getParentFile() != null || outFile.isDirectory() ){

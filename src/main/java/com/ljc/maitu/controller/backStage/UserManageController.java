@@ -48,17 +48,19 @@ public class UserManageController {
         // 3. 判断密码是否存在
         User userResult = userService.queryUserForLogin(username, MD5Utils.getMD5Str(password));
         if (userResult != null) {
+            userResult.setPassword("");
+            String jwt = JwtUtil.generateToken(userResult.getUsername());
+
+
+            //根据jwt与用户信息保存到redis缓存中
+            redis.set(jwt, JsonUtils.objectToJson(userResult), Const.TIMEOUT);
+
             if(userResult.getRole() == Const.Role.ROLE_ADMIN){
-                userResult.setPassword("");
-                String jwt = JwtUtil.generateToken(userResult.getUsername());
 
 
-                //根据jwt与用户信息保存到redis缓存中
-                redis.set(jwt, JsonUtils.objectToJson(userResult), Const.TIMEOUT);
-
-                return ServerResponse.createBySuccess("登录成功",jwt);
+                    return ServerResponse.createByLoginCodeMessage(ResponseCode.ADMIN_LOGIN.getCode(),jwt);
             }else {
-                return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),"不是管理员，无法登陆");
+                return ServerResponse.createByLoginCodeMessage(ResponseCode.USER_LOGIN.getCode(),jwt);
             }
 
         } else {

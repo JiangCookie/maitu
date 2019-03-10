@@ -51,23 +51,26 @@
 	//监听提交  
 	form.on("submit(login)", function() {
 		$.ajax({
-			url: ajaxRoot+GLOBAL_AJAX_URL.userlogin,
+			url: ajaxRoot+GLOBAL_AJAX_URL.adminLogin,
 			type: "post",
 			data: {
 				"username": $("#username").val(),
 				"password": $("#password").val()
 			},
 			success: function(result) {
-				if(result.status == 0) {
-					location = "index.html";
-				} else if(result.status == 1){
+				console.log(result);
+				if(result.status == 3) {
+
+					setTokenToCookie(result.data);
 					location = "admin.html";
+
+				}else if(result.status == 4){
+
+					setTokenToCookie(result.data);
+					location = "index.html";
+
 				} else {
-					refCode();
-					$("#password").val("");
-					layer.alert(result.msg, {
-						title: '提交结果'
-					});
+					location = "login.html";
 				}
 			}
 		});

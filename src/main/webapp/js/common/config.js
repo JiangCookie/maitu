@@ -11,6 +11,9 @@ var GLOBAL_AJAX_URL = {
     userRegist: '/user/regist',
     validatePhone: '/user/validatePhone', //验证手机号
 
+    //------管理员登录------
+    adminLogin: '/manage/user/login',
+
     //------用户------
     get_information: '/user/get_information',  //获取用户信息
 
@@ -19,8 +22,8 @@ var GLOBAL_AJAX_URL = {
     add_category: '/manage/category/add_category',   //添加分类
     categoryList: '/manage/category/get_category',     //一级分类
 
+    //一级分类图片
+    imageList: '/product/list'
 
-    //------管理员登录------
-    adminLogin: '/manage/user/login'
 
 }

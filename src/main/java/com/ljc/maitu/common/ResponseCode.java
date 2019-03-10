@@ -8,6 +8,8 @@ package com.ljc.maitu.common;
 public enum ResponseCode {
     SUCCESS(0,"SUCCESS"),
     ERROR(1,"ERROR"),
+    ADMIN_LOGIN(3,"管理员登录"),
+    USER_LOGIN(4,"普通用户登录"),
     NEED_LOGIN(10,"NEED_LOGIN"),
     ILLEGAL_ARGUMENT(2,"ILLEGAL_ARGUMENT");
 
